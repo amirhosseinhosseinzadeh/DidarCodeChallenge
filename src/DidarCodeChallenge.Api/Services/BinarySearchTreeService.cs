@@ -2,6 +2,7 @@ global using DidarCodeChallenge.Api.Helpers;
 namespace DidarCodeChallenge.Api.Services;
 public class BinarySearchTreeService : IBinarySerachTreeService
 {
+    private int? DeleteNodeValue = null;
     public void InsertNode(Node rootNode, int value)
     {
         if (rootNode == null)
@@ -58,7 +59,9 @@ public class BinarySearchTreeService : IBinarySerachTreeService
             }
             else
             {
-                HardDelete(replaceNodeParrent.Right);
+                var backup = replaceNodeParrent.Value;
+                replaceNodeParrent.Value = replaceNode.Value;
+                replaceNode.Value = DeleteNodeValue.Value;
             }
 
         }
@@ -79,14 +82,18 @@ public class BinarySearchTreeService : IBinarySerachTreeService
             }
             else
             {
-                HardDelete(replaceNodeParrent.Right);
+                var backup = replaceNodeParrent.Value;
+                replaceNodeParrent.Value = replaceNode.Value;
+                replaceNode.Value = DeleteNodeValue.Value;
             }
         }
     }
 
     public List<int> DeleteNode(Node root, int value)
     {
-        if (root.Value == value)
+        if (!DeleteNodeValue.HasValue)
+            DeleteNodeValue = value;
+        if (root.Value == DeleteNodeValue.Value)
         {
             if (!root.HasAnyChild())
             {

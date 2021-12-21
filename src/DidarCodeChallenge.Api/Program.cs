@@ -32,7 +32,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     var str = "Server=172.29.0.5, 1433;Database=DidarCodeChallenge;user id = sa;password=didarcodeChallenge0021";
     // options.UseSqlServer("Server=localhost, 1445;Database=DidarCodeChallenge;user id = sa;password=didarcodeChallenge0021");
-    System.Console.WriteLine(str);
+    // System.Console.WriteLine(str);
     options.UseSqlServer(str);
 });
 var app = builder.Build();
