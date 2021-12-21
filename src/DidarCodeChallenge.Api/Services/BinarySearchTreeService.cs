@@ -12,7 +12,7 @@ public class BinarySearchTreeService : IBinarySerachTreeService
         {
             if (value >= rootNode.Value)
             {
-                if (!rootNode.HasRighHand())
+                if (!rootNode.HasRightHand())
                     rootNode.Right = new(value);
                 else
                     InsertNode(rootNode.Right, value);
@@ -40,29 +40,47 @@ public class BinarySearchTreeService : IBinarySerachTreeService
 
     private void HardDelete(Node target)
     {
-        if (!target.HasAnyChild())
+        if (target.HasRightHand())
         {
-            target = target.Right;
+
+            var replaceNode = target.Right;
+            var replaceNodeParrent = target;
+            while (replaceNode.HasLeftHand())
+            {
+                replaceNodeParrent = replaceNode;
+                replaceNode = replaceNode.Left;
+            }
+            if (!replaceNode.HasAnyChild())
+            {
+                var targetValue = target.Value;
+                target.Value = replaceNode.Value;
+                replaceNode.Value = targetValue;
+            }
+            else
+            {
+                HardDelete(replaceNodeParrent.Right);
+            }
+
         }
         else
         {
-                var replaceNode = target.Right;
-                var replaceNodeParrent = target;
-                while (replaceNode.HasLeftHand())
-                {
-                    replaceNodeParrent = replaceNode;
-                    replaceNode = replaceNode.Left;
-                }
+            var replaceNode = target.Left;
+            var replaceNodeParrent = target;
+            while (replaceNode.HasRightHand())
+            {
+                replaceNodeParrent = replaceNode;
+                replaceNode = replaceNode.Right;
+            }
+            if (!replaceNode.HasAnyChild())
+            {
+                var targetValue = target.Value;
                 target.Value = replaceNode.Value;
-
-                if (!replaceNode.HasAnyChild())
-                {
-                    replaceNodeParrent.Left = null;
-                }
-                else
-                {
-                    HardDelete(replaceNodeParrent.Right);
-                }
+                replaceNode.Value = targetValue;
+            }
+            else
+            {
+                HardDelete(replaceNodeParrent.Right);
+            }
         }
     }
 
@@ -72,7 +90,6 @@ public class BinarySearchTreeService : IBinarySerachTreeService
         {
             if (!root.HasAnyChild())
             {
-                root = null;
                 return new List<int>();
             }
             else
@@ -84,12 +101,20 @@ public class BinarySearchTreeService : IBinarySerachTreeService
 
         if (root.HasLeftHand())
         {
-            ls.AddRange(DeleteNode(root.Left, value));
+            var leftHandResult = DeleteNode(root.Left, value);
+            if (leftHandResult.TryGetNonEnumeratedCount(out int count) && count == 0)
+                root.Left = null;
+            else
+                ls.AddRange(leftHandResult);
         }
         ls.Add(root.Value);
-        if (root.HasRighHand())
+        if (root.HasRightHand())
         {
-            ls.AddRange(DeleteNode(root.Right, value));
+            var rightHandResult = DeleteNode(root.Right, value);
+            if (rightHandResult.TryGetNonEnumeratedCount(out int count) && count == 0)
+                root.Right = null;
+            else
+                ls.AddRange(rightHandResult);
         }
         return ls;
     }

@@ -4,7 +4,7 @@ public static class NodeHelper
     public static bool HasLeftHand(this Node node)
         => node.Left != null;
 
-    public static bool HasRighHand(this Node node)
+    public static bool HasRightHand(this Node node)
         => node.Right != null;
 
     public static bool HasAnyChild(this Node node)
@@ -21,10 +21,5 @@ public static class NodeHelper
                 result = result + ",";
         }
         return result;
-    }
-
-    public static void Delete(this Node node)
-    {
-        node = null;
     }
 }

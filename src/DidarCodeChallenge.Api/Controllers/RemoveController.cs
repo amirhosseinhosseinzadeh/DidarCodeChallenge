@@ -33,6 +33,7 @@ public class RemoveController : ControllerBase
         return Ok(new { result = result });
     }
 
+    [NonAction]
     public IList<int> GetNumberList(string nodes)
     {
         var nodeMembers = nodes.Split(',');

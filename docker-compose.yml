@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  didarcodechallenge_app: 
+    ports:
+      - 5600:80
+    depends_on:
+      - didarcodechallenge_db
+    build: .
+    networks:
+      db_net:
+        ipv4_address: "172.29.0.6"
+  didarcodechallenge_db:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    ports:
+      - 1445:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+      MSSQL_SA_PASSWORD: "didarcodeChallenge0021"
+    networks:
+      db_net:
+        ipv4_address: "172.29.0.5"
+networks:
+  db_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.29.0.0/24"
+        - subnet: "2001:3984:3989::/64"
