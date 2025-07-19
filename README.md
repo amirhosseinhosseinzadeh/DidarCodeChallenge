@@ -3,5 +3,5 @@ The challenge was designing a restful web api wich receive a group of numbers as
 The application have only one end point which contain all described processes</br>
 The solution is completely support docker and to run the project all you need is docker installed on your machine and run bellow command
 ```bash
-     docker-compose up --build
+docker-compose up --build
 ```
